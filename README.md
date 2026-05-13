@@ -6,7 +6,6 @@
 
 ## 项目结构
 ```markdown
-```
 longnight/
   ├─ map
   ├─ packages
@@ -19,5 +18,4 @@ longnight/
       └─ sounds/ (未来可能添加)
   └─saves
 
-```
 ```
