@@ -5,7 +5,8 @@
 **开发中项目，敬请期待。**
 
 ## 项目结构
-'''
+```markdown
+```
 longnight/
   ├─ map
   ├─ packages
@@ -17,4 +18,6 @@ longnight/
       │   └─ ...
       └─ sounds/ (未来可能添加)
   └─saves
-'''
+
+```
+```
