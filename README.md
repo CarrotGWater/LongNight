@@ -1,4 +1,4 @@
-# 长夜 (Long Night)
+# 长夜 (LongNight)
 
 > 太阳渐渐熄灭，现在要面对的，将是无尽的长夜……
 
@@ -9,13 +9,13 @@
 longnight/
   ├─ map
   ├─ packages
-    ├─ CarrotS/
-      ├─ blocks.json           # 方块定义（含_default）
-      ├─ textures/
-      │   ├─ grass.png
-      │   ├─ stone.png
-      │   └─ ...
-      └─ sounds/ (未来可能添加)
+  │ └─ CarrotS/
+  │     ├─ blocks.json  # 方块定义（含_default）
+  │     ├─ textures/
+  │     │     ├─ grass.png
+  │     │     ├─ stone.png
+  │     │     └─ ...
+  │     └─ sounds/ (未来添加)
   └─saves
 
 ```
