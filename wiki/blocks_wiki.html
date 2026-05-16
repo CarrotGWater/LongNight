@@ -1,54 +1,60 @@
+<!-- ============================================================
+  文件名 : blocks_wiki.html
+  描述   : CarrotS 方块 Wiki 页面，仿 Minecraft Wiki (Fandom) 风格
+  数据源 : packages/CarrotS/blocks/blocks.json
+  作者   : 长夜 (LongNight) 开发组
+  版本   : 1.0.0
+  ============================================================ -->
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+  <!-- ==================== 元数据区域 ==================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CarrotS 方块 — 长夜Wiki</title>
+  <title>CarrotS 方块 -- CarrotS -- 长夜Wiki</title>
+
+  <!-- ================================================================ -->
+  <!--  模块 1: CSS 样式                                                 -->
+  <!--  内容: 统一主题变量（从外部 theme.css 导入）+ 布局/组件样式       -->
+  <!--  theme.css 路径相对于本文件: css/theme.css                        -->
+  <!--  所有颜色值均通过 CSS 变量控制，切换 dark/light 只需改 body class -->
+  <!-- ================================================================ -->
+  <link rel="stylesheet" href="css/theme.css">
   <style>
-    /* ===== 基础重置 & 配色 ===== */
+    /* ----------------------------------------------------------------
+       1.1 全局 Reset
+       作用: 统一浏览器默认样式
+       ---------------------------------------------------------------- */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      --bg-dark: #1b1b2f;
-      --bg-card: #232342;
-      --bg-table-alt: #2a2a4a;
-      --border: #3b3b6b;
-      --accent: #f5c542;       /* 金胡萝卜色 */
-      --accent-dim: #b8860b;
-      --text: #e8e8f0;
-      --text-dim: #a0a0b8;
-      --link: #5dade2;
-      --link-hover: #85c1e9;
-      --header-bg: linear-gradient(135deg, #2d1b3d, #1a1a3e);
-      --infobox-bg: #1e1e3a;
-      --property-name: #c9a84c;
-      --category-grass: #7ec850;
-      --category-stone: #8f8f8f;
-      --category-air: #88ccff;
-    }
-
+    /* body: 全局字体、背景、文字颜色、行高 */
     body {
       font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
-      background: var(--bg-dark);
+      background: var(--bg-page);
       color: var(--text);
       line-height: 1.7;
     }
 
+    /* 超链接默认与悬停状态 */
     a { color: var(--link); text-decoration: none; }
     a:hover { color: var(--link-hover); text-decoration: underline; }
 
-    /* ===== 头部 ===== */
+    /* ----------------------------------------------------------------
+       1.2 页面头部（wiki-header）
+       作用: 顶部导航栏，sticky 固定在页面顶部
+       ---------------------------------------------------------------- */
     .wiki-header {
-      background: var(--header-bg);
-      border-bottom: 3px solid var(--accent);
-      padding: 1.2rem 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      position: sticky;
+      background: var(--header-bg);             /* 渐变背景 */
+      border-bottom: 3px solid var(--accent);   /* 底部金边 */
+      padding: 1.2rem 2rem;                     /* 内边距 */
+      display: flex;                            /* Flexbox 布局 */
+      align-items: center;                      /* 垂直居中 */
+      gap: 1rem;                                /* 子元素间距 */
+      position: sticky;                         /* 粘性定位，随滚动固定在顶部 */
       top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 12px rgba(0, 84, 149, 0.5);
+      z-index: 100;                             /* 确保在其他内容之上 */
+      box-shadow: var(--shadow-header);   /* 底部阴影，增强立体感 */
     }
     .wiki-header .logo {
       font-size: 1.6rem;
@@ -63,7 +69,7 @@
       margin-left: 0.6rem;
     }
     .wiki-header .nav-links {
-      margin-left: auto;
+      margin-left: auto;          /* 推到右侧 */
       display: flex;
       gap: 1.5rem;
     }
@@ -80,18 +86,23 @@
       text-decoration: none;
     }
 
-    /* ===== 主容器 ===== */
+    /* ----------------------------------------------------------------
+       1.3 主容器（wiki-container）
+       作用: 两栏 Grid 布局，左侧正文 + 右侧侧边栏
+       ---------------------------------------------------------------- */
     .wiki-container {
-      max-width: 1100px;
-      margin: 2rem auto;
+      max-width: 1100px;          /* 最大宽度，大屏居中 */
+      margin: 2rem auto;          /* 上下边距 + 水平居中 */
       padding: 0 1.5rem;
       display: grid;
-      grid-template-columns: 1fr 280px;
+      grid-template-columns: 1fr 280px;  /* 左侧自适应，右侧 280px 固定 */
       gap: 2rem;
     }
 
-    /* ===== 主要内容区 ===== */
-    .wiki-content { min-width: 0; }
+    /* ----------------------------------------------------------------
+       1.4 左侧内容区
+       ---------------------------------------------------------------- */
+    .wiki-content { min-width: 0; }  /* 防止 Grid 溢出 */
 
     .page-title {
       font-size: 2.4rem;
@@ -107,7 +118,10 @@
       border-bottom: 1px solid var(--border);
     }
 
-    /* ===== 信息框（侧边卡片） ===== */
+    /* ----------------------------------------------------------------
+       1.5 信息框（Infobox）
+       作用: 右侧栏卡片，展示方块总览/目录，仿 MC Wiki 风格
+       ---------------------------------------------------------------- */
     .infobox {
       background: var(--infobox-bg);
       border: 1px solid var(--border);
@@ -133,26 +147,18 @@
     .infobox td:first-child {
       color: var(--property-name);
       font-weight: 600;
-      white-space: nowrap;
+      white-space: nowrap;    /* 防止属性名换行 */
       width: 38%;
     }
-    .infobox .texture-preview {
-      display: block;
-      width: 48px;
-      height: 48px;
-      image-rendering: pixelated;
-      background: #413456;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      margin: 0 auto 0.5rem auto;
-    }
 
-    /* ===== 章节标题 ===== */
+    /* ----------------------------------------------------------------
+       1.6 章节标题（h2 / h3）
+       ---------------------------------------------------------------- */
     h2 {
       font-size: 1.6rem;
       margin: 2rem 0 1rem;
       padding-left: 0.6rem;
-      border-left: 4px solid var(--accent);
+      border-left: 4px solid var(--accent);  /* 左侧金色竖条 */
       color: var(--accent);
     }
     h3 {
@@ -161,7 +167,9 @@
       color: var(--accent-dim);
     }
 
-    /* ===== 表格 ===== */
+    /* ----------------------------------------------------------------
+       1.7 表格（wiki-table）
+       ---------------------------------------------------------------- */
     .wiki-table {
       width: 100%;
       border-collapse: collapse;
@@ -169,7 +177,7 @@
       font-size: 0.92rem;
     }
     .wiki-table th {
-      background: #2d2d55;
+      background: var(--bg-table-header);
       color: var(--accent);
       font-weight: 700;
       padding: 0.6rem 0.8rem;
@@ -180,27 +188,27 @@
       padding: 0.5rem 0.8rem;
       border: 1px solid var(--border);
     }
-    .wiki-table tr:nth-child(even) td {
-      background: var(--bg-table-alt);
-    }
-    .wiki-table tr:hover td {
-      background: #3f3f52;
-    }
+    /* 偶数行交替背景 */
+    .wiki-table tr:nth-child(even) td { background: var(--bg-table-alt); }
+    /* 行悬停高亮 */
+    .wiki-table tr:hover td { background: var(--bg-hover); }
 
-    /* 方块图标占位 */
+    /* ---- 方块图标占位 ---- */
     .block-icon {
       display: inline-block;
-      width: 32px;
-      height: 32px;
-      image-rendering: pixelated;
-      background: #2a2a4a;
+      width: 32px; height: 32px;
+      image-rendering: pixelated;  /* 像素风格放大 */
+      background: var(--bg-block-icon);
       border: 1px solid var(--border);
       border-radius: 3px;
       vertical-align: middle;
       margin-right: 6px;
     }
 
-    /* ===== 标签/徽标 ===== */
+    /* ----------------------------------------------------------------
+       1.8 分类标签（Tag）
+       作用: 标识方块所属类别（空气/草/石头）
+       ---------------------------------------------------------------- */
     .tag {
       display: inline-block;
       font-size: 0.75rem;
@@ -209,12 +217,14 @@
       font-weight: 600;
       margin-right: 4px;
     }
-    .tag-grass { background: #2d5a2d; color: var(--category-grass); }
-    .tag-stone { background: #3a3a3a; color: var(--category-stone); }
-    .tag-air   { background: #1a3a5a; color: var(--category-air); }
-    .tag-default { background: #3a2a3a; color: var(--text-dim); }
+    .tag-grass { background: var(--bg-tag-grass); color: var(--category-grass); }
+    .tag-stone { background: var(--bg-tag-stone); color: var(--category-stone); }
+    .tag-air   { background: var(--bg-tag-air); color: var(--category-air); }
 
-    /* ===== 属性列表 ===== */
+    /* ----------------------------------------------------------------
+       1.9 属性列表（prop-list）
+       作用: 方块详情中的关键属性网格（两列）
+       ---------------------------------------------------------------- */
     .prop-list {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -223,7 +233,7 @@
     }
     .prop-list .prop-item {
       padding: 0.4rem 0.6rem;
-      background: rgba(255,255,255,0.03);
+      background: var(--prop-item-bg);
       border-radius: 4px;
       border-left: 2px solid var(--border);
     }
@@ -232,22 +242,25 @@
       font-weight: 600;
       font-size: 0.85rem;
     }
-    .prop-list .prop-val {
-      font-size: 0.95rem;
-    }
+    .prop-list .prop-val { font-size: 0.95rem; }
 
-    /* ===== 提示框 & 警告 ===== */
+    /* ----------------------------------------------------------------
+       1.10 提示框（notice）
+       作用: 重要提示信息，左侧有金色竖条
+       ---------------------------------------------------------------- */
     .notice {
-      background: #2a2a4a;
-      border-left: 4px solid var(--accent);
+      background: var(--bg-notice);
+      border-left: 4px solid var(--accent);  /* 金色左侧竖条 */
       padding: 0.8rem 1.2rem;
       margin: 1rem 0;
-      border-radius: 0 6px 6px 0;
+      border-radius: 0 6px 6px 0;           /* 仅右侧圆角 */
       font-size: 0.92rem;
     }
     .notice strong { color: var(--accent); }
 
-    /* ===== 底部 ===== */
+    /* ----------------------------------------------------------------
+       1.11 页脚
+       ---------------------------------------------------------------- */
     .wiki-footer {
       text-align: center;
       padding: 2rem;
@@ -257,17 +270,14 @@
       color: var(--text-dim);
     }
 
-    /* ===== 响应式 ===== */
+    /* ----------------------------------------------------------------
+       1.12 响应式设计
+       作用: 屏幕宽度 < 800px 时切换为单栏布局
+       ---------------------------------------------------------------- */
     @media (max-width: 800px) {
-      .wiki-container {
-        grid-template-columns: 1fr;
-      }
-      .prop-list {
-        grid-template-columns: 1fr;
-      }
-      .wiki-header {
-        flex-wrap: wrap;
-      }
+      .wiki-container { grid-template-columns: 1fr; }  /* 两栏变一栏 */
+      .prop-list { grid-template-columns: 1fr; }       /* 属性两列变一列 */
+      .wiki-header { flex-wrap: wrap; }
       .wiki-header .nav-links {
         margin-left: 0;
         width: 100%;
@@ -275,11 +285,62 @@
         gap: 0.8rem;
       }
     }
+    /* ----------------------------------------------------------------
+       1.13 主题切换按钮 (theme-toggle)
+       作用: 固定在头部右侧的白天/暗色切换按钮
+       ---------------------------------------------------------------- */
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      font-size: 1.2rem;
+      line-height: 1;
+      transition: 0.2s;
+      box-shadow: var(--shadow-toggle);
+      color: var(--text);
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: var(--accent);
+    }
+    .theme-toggle .toggle-icon {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    /* 白日模式时图标旋转一下增加动感 */
+    .light-mode .theme-toggle .toggle-icon {
+      transform: rotate(90deg);
+    }
+
+    /* ----------------------------------------------------------------
+       1.14 View Transition API — 主题切换扩散动画
+       作用: 从按钮位置圆形扩散，新主题覆盖旧主题，内容全程可见
+       原理: 利用 document.startViewTransition() 截取旧/新状态快照，
+             通过 Web Animations API 控制 ::view-transition-new(root)
+             的 clip-path 从按钮位置扩散到全屏。
+       CSS 部分: 禁用默认动画，设置 mix-blend-mode 防止重叠混合
+       JS  部分: 见模块 5
+       ---------------------------------------------------------------- */
+    /* 禁用 View Transition 默认的交叉淡入淡出动画 */
+    ::view-transition-old(root) {
+      animation: none;
+      mix-blend-mode: normal;
+    }
+    ::view-transition-new(root) {
+      animation: none;
+      mix-blend-mode: normal;
+    }
   </style>
 </head>
 <body>
 
-<!-- ===== 页面头部 ===== -->
+<!-- ================================================================ -->
+<!--  模块 2: 页面头部导航栏                                          -->
+<!--  内容: 网站 Logo + 导航链接（首页、方块、物品、生物群系等）      -->
+<!-- ================================================================ -->
 <header class="wiki-header">
   <div class="logo">
     🌙 长夜Wiki
@@ -292,35 +353,53 @@
     <a href="#">生物群系</a>
     <a href="#">数据格式</a>
   </nav>
+
+  <!-- ---- 主题切换按钮 ---- -->
+  <!-- 点击切换 dark-mode / light-mode，状态存入 localStorage -->
+  <button id="themeToggle" class="theme-toggle" aria-label="切换主题" title="切换暗色/白日模式">
+    <span class="toggle-icon">🌙</span>
+  </button>
 </header>
 
-<!-- ===== 主内容 ===== -->
+<!-- ================================================================ -->
+<!--  模块 3: 主内容容器（两栏布局）                                  -->
+<!--  左侧: 正文（main.wiki-content）                                 -->
+<!--  右侧: 侧边栏（aside.wiki-sidebar）                              -->
+<!-- ================================================================ -->
 <div class="wiki-container">
 
-  <!-- 左侧：正文 -->
+  <!-- ============================================================ -->
+  <!--  3.1 左侧正文区域                                             -->
+  <!-- ============================================================ -->
   <main class="wiki-content">
 
+    <!-- ---- 页面标题 ---- -->
     <h1 class="page-title">CarrotS 方块</h1>
     <p class="page-subtitle">
       CarrotS 包中的方块定义 · 基于 <code>blocks.json</code> 数据驱动
     </p>
 
-    <!-- 简介 -->
+    <!-- ---- 简介 ---- -->
     <p>
-      <strong>CarrotS</strong> 是<a href="#">长夜</a>项目中的一个示例资源包，提供了基础方块的定义。
+      <strong>CarrotS</strong> 是长夜项目的一个基础资源包，该项目以此资源包为核心资源构建。
       每个方块通过 JSON 配置其属性，包括硬度、透明度、纹理、掉落物、声音等。
       所有方块都继承自 <code>ID_default</code> 中的默认值，仅有差别的字段需要显式覆盖。
     </p>
 
+    <!-- ---- 数据驱动提示框 ---- -->
     <div class="notice">
       <strong>💡 数据驱动提示：</strong>
-      当某个属性（如 <code>hardness</code>）未在具体方块中定义时，游戏会回退使用
+      当某个属性（如 <code>physics.hardness</code>）未在具体方块中定义时，游戏会回退使用
       <code>ID_default</code> 中的默认值。这意味着每个方块只需定义与其默认值不同的字段即可。
+      例如 <code>grass</code> 只覆写了 <code>sources.texture</code> 和 <code>interaction.drops</code>，
+      其余 15+ 个属性全部继承自 <code>ID_default</code>。
     </div>
 
-    <!-- ===== 方块列表 ===== -->
+    <!-- ============================================================ -->
+    <!--  3.2 方块列表表格                                            -->
+    <!--  展示所有 3 个方块的 ID、名称、纹理、硬度、透明度、掉落物    -->
+    <!-- ============================================================ -->
     <h2 id="block-list">方块列表</h2>
-
     <p>目前 CarrotS 中定义了以下方块：</p>
 
     <table class="wiki-table">
@@ -335,36 +414,43 @@
         </tr>
       </thead>
       <tbody>
+        <!-- 空气 ID_000000：physics.transparent=true, physics.hardness=0.0（覆写默认），无纹理，无掉落物 -->
         <tr>
           <td><code>ID_000000</code></td>
           <td><span class="tag tag-air">空气</span> Air</td>
           <td>—</td>
-          <td>0.0</td>
+          <td>0.0 <small>(覆写)</small></td>
           <td>✅ 是</td>
           <td>无</td>
         </tr>
+        <!-- 草方块 ID_000001：只覆写 sources.texture="grass.png", interaction.drops=["grass"]，其余继承 ID_default -->
         <tr>
           <td><code>ID_000001</code></td>
           <td><span class="tag tag-grass">草</span> Grass</td>
           <td><span class="block-icon" style="background: #5a8c3e;"></span> grass.png</td>
-          <td>1.0 <small>(默认)</small></td>
+          <td>1.0 <small>(继承默认)</small></td>
           <td>❌</td>
-          <td><code>grass</code></td>
+          <td><code>["grass"]</code></td>
         </tr>
+        <!-- 石头 ID_000002：只覆写 sources.texture="stone.png", interaction.drops=["stone"]，其余继承 ID_default -->
         <tr>
           <td><code>ID_000002</code></td>
           <td><span class="tag tag-stone">石头</span> Stone</td>
           <td><span class="block-icon" style="background: #6b6b6b;"></span> stone.png</td>
-          <td>1.0 <small>(默认)</small></td>
+          <td>1.0 <small>(继承默认)</small></td>
           <td>❌</td>
-          <td><code>stone</code></td>
+          <td><code>["stone"]</code></td>
         </tr>
       </tbody>
     </table>
 
-    <!-- ===== 各方块详情 ===== -->
+    <!-- ============================================================ -->
+    <!--  3.3 各方块详情                                              -->
+    <!--  每个方块独立的属性卡片 + 文字描述                           -->
+    <!-- ============================================================ -->
 
-    <!-- 空气 -->
+    <!-- --- 空气 (Air) ID_000000 --- -->
+    <!-- JSON 实际只有三条: name=air, transparent=true, hardness=0.0, 其余均继承 ID_default -->
     <h3 id="air">空气 <span class="tag tag-air" style="vertical-align:middle;">Air</span></h3>
     <p>
       <strong>空气</strong>（Air）是构成世界中空白空间的方块。它完全透明，硬度为 0，
@@ -372,13 +458,15 @@
     </p>
     <div class="prop-list">
       <div class="prop-item"><span class="prop-key">ID</span> <span class="prop-val"><code>ID_000000</code></span></div>
-      <div class="prop-item"><span class="prop-key">透明</span> <span class="prop-val">✅ 是</span></div>
-      <div class="prop-item"><span class="prop-key">硬度</span> <span class="prop-val">0.0</span></div>
-      <div class="prop-item"><span class="prop-key">掉落物</span> <span class="prop-val">无</span></div>
-      <div class="prop-item"><span class="prop-key">纹理</span> <span class="prop-val">无纹理</span></div>
+      <div class="prop-item"><span class="prop-key">physics.transparent</span> <span class="prop-val">✅ <code>true</code></span></div>
+      <div class="prop-item"><span class="prop-key">physics.hardness</span> <span class="prop-val"><code>0.0</code> <small>(覆写默认 1.0)</small></span></div>
+      <div class="prop-item"><span class="prop-key">interaction.drops</span> <span class="prop-val">无 <small>(继承默认但空气不可破坏)</small></span></div>
+      <div class="prop-item"><span class="prop-key">sources.texture</span> <span class="prop-val">无纹理 <small>(继承默认 missing.png，但不会渲染)</small></span></div>
+      <div class="prop-item"><span class="prop-key" style="color:var(--text-dim);">其余字段</span> <span class="prop-val">全部继承自 <code>ID_default</code></span></div>
     </div>
 
-    <!-- 草方块 -->
+    <!-- --- 草方块 (Grass) ID_000001 --- -->
+    <!-- JSON 实际覆写：texture=grass.png, drops=["grass"]，其余均继承 ID_default -->
     <h3 id="grass">草方块 <span class="tag tag-grass" style="vertical-align:middle;">Grass</span></h3>
     <p>
       <strong>草方块</strong>（Grass）是覆盖在大多数陆地生物群系表面的方块。
@@ -386,14 +474,16 @@
     </p>
     <div class="prop-list">
       <div class="prop-item"><span class="prop-key">ID</span> <span class="prop-val"><code>ID_000001</code></span></div>
-      <div class="prop-item"><span class="prop-key">透明</span> <span class="prop-val">❌ 否 <small>(继承默认)</small></span></div>
-      <div class="prop-item"><span class="prop-key">硬度</span> <span class="prop-val">1.0 <small>(继承默认)</small></span></div>
-      <div class="prop-item"><span class="prop-key">纹理</span> <span class="prop-val"><code>grass.png</code></span></div>
-      <div class="prop-item"><span class="prop-key">掉落物</span> <span class="prop-val"><code>grass</code></span></div>
-      <div class="prop-item"><span class="prop-key">可燃</span> <span class="prop-val">❌ 否 <small>(继承默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">physics.transparent</span> <span class="prop-val">❌ <code>false</code> <small>(继承默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">physics.hardness</span> <span class="prop-val"><code>1.0</code> <small>(继承默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">sources.texture</span> <span class="prop-val"><code>"grass.png"</code> <small>(覆写默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">interaction.drops</span> <span class="prop-val"><code>["grass"]</code> <small>(覆写默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">physics.flammable</span> <span class="prop-val">❌ <code>false</code> <small>(继承默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key" style="color:var(--text-dim);">其余字段</span> <span class="prop-val">全部继承自 <code>ID_default</code></span></div>
     </div>
 
-    <!-- 石头 -->
+    <!-- --- 石头 (Stone) ID_000002 --- -->
+    <!-- JSON 实际覆写：texture=stone.png, drops=["stone"]，其余均继承 ID_default -->
     <h3 id="stone">石头 <span class="tag tag-stone" style="vertical-align:middle;">Stone</span></h3>
     <p>
       <strong>石头</strong>（Stone）是地下最常见的固体方块。采集后会掉落自身。
@@ -401,14 +491,18 @@
     </p>
     <div class="prop-list">
       <div class="prop-item"><span class="prop-key">ID</span> <span class="prop-val"><code>ID_000002</code></span></div>
-      <div class="prop-item"><span class="prop-key">透明</span> <span class="prop-val">❌ 否 <small>(继承默认)</small></span></div>
-      <div class="prop-item"><span class="prop-key">硬度</span> <span class="prop-val">1.0 <small>(继承默认)</small></span></div>
-      <div class="prop-item"><span class="prop-key">纹理</span> <span class="prop-val"><code>stone.png</code></span></div>
-      <div class="prop-item"><span class="prop-key">掉落物</span> <span class="prop-val"><code>stone</code></span></div>
-      <div class="prop-item"><span class="prop-key">推荐工具</span> <span class="prop-val">镐 (待定)</span></div>
+      <div class="prop-item"><span class="prop-key">physics.transparent</span> <span class="prop-val">❌ <code>false</code> <small>(继承默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">physics.hardness</span> <span class="prop-val"><code>1.0</code> <small>(继承默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">sources.texture</span> <span class="prop-val"><code>"stone.png"</code> <small>(覆写默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">interaction.drops</span> <span class="prop-val"><code>["stone"]</code> <small>(覆写默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">interaction.tool_type</span> <span class="prop-val"><code>"empty"</code> <small>(继承默认，暂未定义推荐工具)</small></span></div>
+      <div class="prop-item"><span class="prop-key" style="color:var(--text-dim);">其余字段</span> <span class="prop-val">全部继承自 <code>ID_default</code></span></div>
     </div>
 
-    <!-- ===== 默认模板详解 ===== -->
+    <!-- ============================================================ -->
+    <!--  3.4 ID_default 默认模板详解                                 -->
+    <!--  展示 15 个属性的默认值及含义                                -->
+    <!-- ============================================================ -->
     <h2 id="default">默认模板 <code>ID_default</code></h2>
 
     <p>
@@ -423,115 +517,175 @@
       这表示它仅作为配置模板，在实际游戏中不会出现。
     </div>
 
+    <!-- 默认属性表格（分三组：physics · sources · interaction，与 blocks.json 结构一致） -->
     <table class="wiki-table">
       <thead>
         <tr>
-          <th>属性名</th>
+          <th>属性路径</th>
           <th>默认值</th>
           <th>说明</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td><code>hardness</code></td><td>1.0</td><td>方块硬度，影响挖掘时间</td></tr>
-        <tr><td><code>transparent</code></td><td>false</td><td>是否为透明方块（如玻璃、空气）</td></tr>
-        <tr><td><code>flammable</code></td><td>false</td><td>是否可燃</td></tr>
-        <tr><td><code>integrity</code></td><td><code>"A_full"</code></td><td>完整性 / 碰撞箱形态</td></tr>
-        <tr><td><code>state_of_matter</code></td><td><code>"solid"</code></td><td>物态：solid / liquid / gas</td></tr>
-        <tr><td><code>texture</code></td><td><code>"missing.png"</code></td><td>默认纹理（缺失纹理占位）</td></tr>
-        <tr><td><code>drops</code></td><td><code>["CarrotS_block:0"]</code></td><td>掉落物列表</td></tr>
-        <tr><td><code>tile_entity</code></td><td>null</td><td>绑定的 TileEntity（如箱子、熔炉）</td></tr>
-        <tr><td><code>tool_type</code></td><td><code>"empty"</code></td><td>推荐工具类型</td></tr>
-        <tr><td><code>map_color</code></td><td><code>"#888888"</code></td><td>地图上显示的颜色</td></tr>
-        <tr><td><code>light_level</code></td><td>0</td><td>自身发光亮度 (0–15)</td></tr>
-        <tr><td><code>speed_modifier</code></td><td>1.0</td><td>行走速度倍率</td></tr>
-        <tr><td><code>gravity</code></td><td>1.0</td><td>重力倍率（影响掉落速度等）</td></tr>
-        <tr><td><code>jump_modifier</code></td><td>1.0</td><td>跳跃高度倍率</td></tr>
-        <tr><td><code>sound</code></td><td>见下方</td><td>声音配置</td></tr>
+        <!-- ===== 分组 1: physics（物理属性） ===== -->
+        <tr style="background:var(--bg-table-header); color:var(--accent); font-weight:700;">
+          <td colspan="3">▸ physics — 物理属性</td>
+        </tr>
+        <tr><td><code>physics.hardness</code></td><td>1.0</td><td>方块硬度，影响挖掘时间</td></tr>
+        <tr><td><code>physics.transparent</code></td><td>false</td><td>是否为透明方块（如玻璃、空气）</td></tr>
+        <tr><td><code>physics.flammable</code></td><td>false</td><td>是否可燃</td></tr>
+        <tr><td><code>physics.integrity</code></td><td><code>"A_full"</code></td><td>完整性 / 碰撞箱形态</td></tr>
+        <tr><td><code>physics.state_of_matter</code></td><td><code>"solid"</code></td><td>物态：solid（固体）/ liquid（液体）/ gas（气体）</td></tr>
+        <tr><td><code>physics.gravity</code></td><td>1.0</td><td>重力倍率（影响掉落速度等）</td></tr>
+        <tr><td><code>physics.speed_modifier</code></td><td>1.0</td><td>行走速度倍率</td></tr>
+        <tr><td><code>physics.jump_modifier</code></td><td>1.0</td><td>跳跃高度倍率</td></tr>
+        <!-- ===== 分组 2: sources（视觉 & 声源） ===== -->
+        <tr style="background:var(--bg-table-header); color:var(--accent); font-weight:700;">
+          <td colspan="3">▸ sources — 视觉 &amp; 声源</td>
+        </tr>
+        <tr><td><code>sources.texture</code></td><td><code>"missing.png"</code></td><td>默认纹理（缺失纹理占位图）</td></tr>
+        <tr><td><code>sources.map_color</code></td><td><code>"#888888"</code></td><td>地图上显示的颜色（十六进制 RGB）</td></tr>
+        <tr><td><code>sources.light_level</code></td><td>0</td><td>自身发光亮度 (0–15)</td></tr>
+        <tr><td><code>sources.sound_break</code></td><td><code>"block_break"</code></td><td>破坏方块时的音效</td></tr>
+        <tr><td><code>sources.sound_place</code></td><td><code>"block_place"</code></td><td>放置方块时的音效</td></tr>
+        <tr><td><code>sources.sound_step</code></td><td><code>"block_step"</code></td><td>在方块上行走时的音效</td></tr>
+        <!-- ===== 分组 3: interaction（交互属性） ===== -->
+        <tr style="background:var(--bg-table-header); color:var(--accent); font-weight:700;">
+          <td colspan="3">▸ interaction — 交互属性</td>
+        </tr>
+        <tr><td><code>interaction.tool_type</code></td><td><code>"empty"</code></td><td>推荐挖掘工具，"empty" = 空手即可</td></tr>
+        <tr><td><code>interaction.drops</code></td><td><code>["CarrotS_block:0"]</code></td><td>掉落物列表（物品 ID 数组）</td></tr>
+        <tr><td><code>interaction.tile_entity</code></td><td>null</td><td>绑定的 TileEntity（如箱子、熔炉等需存储数据的方块）</td></tr>
       </tbody>
     </table>
 
+    <!-- 默认声音配置（sources 分组下的三个声音字段） -->
     <h3>默认声音配置</h3>
     <table class="wiki-table">
       <thead>
-        <tr><th>事件</th><th>声音 ID</th></tr>
+        <tr><th>字段名</th><th>事件</th><th>声音 ID</th></tr>
       </thead>
       <tbody>
-        <tr><td>破坏 (break)</td><td><code>block_break</code></td></tr>
-        <tr><td>放置 (place)</td><td><code>block_place</code></td></tr>
-        <tr><td>行走 (step)</td><td><code>block_step</code></td></tr>
+        <tr><td><code>sources.sound_break</code></td><td>破坏 (break)</td><td><code>"block_break"</code></td></tr>
+        <tr><td><code>sources.sound_place</code></td><td>放置 (place)</td><td><code>"block_place"</code></td></tr>
+        <tr><td><code>sources.sound_step</code></td><td>行走 (step)</td><td><code>"block_step"</code></td></tr>
       </tbody>
     </table>
 
-    <!-- ===== 属性详解 ===== -->
+    <!-- ============================================================ -->
+    <!--  3.5 属性详解                                                -->
+    <!--  严格按照 blocks.json 的三层分组结构展开说明                  -->
+    <!--  顶层 key → 分组 (physics / sources / interaction) → 具体字段 -->
+    <!-- ============================================================ -->
     <h2 id="properties">属性详解</h2>
+    <p>以下按照 <code>blocks.json</code> 的实际结构，分 <strong>physics</strong>、<strong>sources</strong>、<strong>interaction</strong> 三个分组逐一说明。</p>
 
-    <h3><code>name</code> — 名称</h3>
-    <p>方块的本地化键名或显示名称。例如 <code>"grass"</code>、<code>"stone"</code>。若后续接入 i18n 系统，此字段可能作为翻译键使用。</p>
+    <!-- ============================================================ -->
+    <!--  3.5.1 顶层 name 字段（不属于任何分组，直接在根层级）        -->
+    <!-- ============================================================ -->
+    <h3><code>name</code> — 名称（顶层字段）</h3>
+    <p>方块的标识名称，位于 JSON 根层级。例如 <code>"air"</code>、<code>"grass"</code>、<code>"stone"</code>。<br>
+    <code>ID_default</code> 的 <code>name</code> 为 <code>"CarrotS_NONE"</code>，表示它仅作为默认模板。</p>
 
-    <h3><code>hardness</code> — 硬度</h3>
+    <!-- ============================================================ -->
+    <!--  3.5.2 physics 分组 — 物理属性                               -->
+    <!-- ============================================================ -->
+    <h3 style="margin-top:2rem; border-left:4px solid var(--accent); padding-left:0.6rem;">▸ <code>physics</code> — 物理属性组</h3>
+    <p>包含 8 个子字段，控制方块的硬度、透明度、可燃性、碰撞箱、物态、重力、速度修正、跳跃修正。</p>
+
+    <h4><code>physics.hardness</code> — 硬度</h4>
     <p>数值越高，挖掘时间越长。计算公式参考 Minecraft：<br>
-    <code>挖掘时间 = 硬度 × 1.5 / 工具速度</code>（待确认）。<br>
-    空气的硬度为 0，瞬间破坏。</p>
+    <code>挖掘时间 = hardness × 1.5 / 工具速度</code>（待确认）。<br>
+    空气的硬度为 0，可瞬间破坏。</p>
 
-    <h3><code>transparent</code> — 透明度</h3>
+    <h4><code>physics.transparent</code> — 透明度</h4>
     <p>若为 <code>true</code>，则光线可以穿过该方块，且方块侧面不会被渲染（类似玻璃、空气）。<br>
-    目前只有空气设置了 <code>true</code>。</p>
+    目前只有空气的 <code>ID_000000</code> 显式设置了 <code>true</code>。</p>
 
-    <h3><code>flammable</code> — 可燃性</h3>
+    <h4><code>physics.flammable</code> — 可燃性</h4>
     <p>若为 <code>true</code>，该方块可被火焰点燃并蔓延。目前所有方块均不可燃（默认 <code>false</code>）。</p>
 
-    <h3><code>integrity</code> — 完整性</h3>
+    <h4><code>physics.integrity</code> — 完整性</h4>
     <p>控制方块的碰撞箱与外观形态。<code>"A_full"</code> 表示完整的 1×1×1 方块。未来可能支持台阶 (<code>"slab"</code>)、楼梯 (<code>"stair"</code>) 等。</p>
 
-    <h3><code>state_of_matter</code> — 物态</h3>
+    <h4><code>physics.state_of_matter</code> — 物态</h4>
     <p>物理状态：<code>solid</code>（固体）、<code>liquid</code>（液体）、<code>gas</code>（气体）。影响方块的流动与碰撞行为。</p>
 
-    <h3><code>texture</code> — 纹理</h3>
-    <p>方块使用的纹理文件路径（相对于 textures/ 目录）。默认值为 <code>"missing.png"</code>（缺失纹理占位图）。</p>
-
-    <h3><code>drops</code> — 掉落物</h3>
-    <p>字符串数组，指定方块被破坏后掉落的物品 ID。例如 <code>["grass"]</code> 表示掉落草物品。</p>
-
-    <h3><code>tile_entity</code> — 方块实体</h3>
-    <p>如果此方块需要存储额外数据（如箱子中的物品、熔炉的进度），则在此指定绑定的 TileEntity 类名。当前所有方块均为 <code>null</code>。</p>
-
-    <h3><code>tool_type</code> — 工具类型</h3>
-    <p>推荐的挖掘工具，<code>"empty"</code> 表示空手即可。未来可能扩展为 <code>"pickaxe"</code>、<code>"shovel"</code>、<code>"axe"</code> 等。</p>
-
-    <h3><code>map_color</code> — 地图颜色</h3>
-    <p>在游戏地图上该方块所呈现的颜色（十六进制 RGB）。例如默认 <code>"#888888"</code> 为灰色。</p>
-
-    <h3><code>light_level</code> — 光照等级</h3>
-    <p>方块自身发出的光照强度，范围为 0–15。0 表示不发光。未来发光的方块（如荧石、火把）将使用此属性。</p>
-
-    <h3><code>speed_modifier</code> — 速度修正</h3>
-    <p>玩家在该方块上行走的速度倍率。1.0 为正常速度。可用来制作减速方块（如蛛网 < 1.0）或加速方块（如冰 > 1.0）。</p>
-
-    <h3><code>gravity</code> — 重力</h3>
+    <h4><code>physics.gravity</code> — 重力</h4>
     <p>该方块的重力倍率，影响掉落中的实体或受重力影响的方块（如沙砾）的下落速度。</p>
 
-    <h3><code>jump_modifier</code> — 跳跃修正</h3>
+    <h4><code>physics.speed_modifier</code> — 速度修正</h4>
+    <p>玩家在该方块上行走的速度倍率。1.0 为正常速度。可用来制作减速方块（如蛛网 < 1.0）或加速方块（如冰 > 1.0）。</p>
+
+    <h4><code>physics.jump_modifier</code> — 跳跃修正</h4>
     <p>玩家在该方块上跳跃的高度倍率。1.0 为正常跳跃高度。</p>
 
-    <h3><code>sound</code> — 声音</h3>
-    <p>包含三个子字段：<code>break</code>（破坏音效）、<code>place</code>（放置音效）、<code>step</code>（行走音效）。每个字段指定一个声音 ID。</p>
+    <!-- ============================================================ -->
+    <!--  3.5.3 sources 分组 — 视觉 & 声源                            -->
+    <!-- ============================================================ -->
+    <h3 style="margin-top:2rem; border-left:4px solid var(--accent); padding-left:0.6rem;">▸ <code>sources</code> — 视觉 &amp; 声源组</h3>
+    <p>包含 6 个子字段，控制纹理、地图颜色、光照等级、三种声音。</p>
 
-    <!-- ===== 与 Minecraft 的对比 ===== -->
-    <h2 id="comparison">与 Minecraft 的对比</h2>
+    <h4><code>sources.texture</code> — 纹理</h4>
+    <p>方块使用的纹理文件路径（相对于 textures/ 目录）。默认值为 <code>"missing.png"</code>（缺失纹理占位图）。<br>
+    各方块覆写：<code>grass</code> → <code>"grass.png"</code>，<code>stone</code> → <code>"stone.png"</code>。</p>
+
+    <h4><code>sources.map_color</code> — 地图颜色</h4>
+    <p>在游戏地图上该方块所呈现的颜色（十六进制 RGB）。例如默认 <code>"#888888"</code> 为灰色。</p>
+
+    <h4><code>sources.light_level</code> — 光照等级</h4>
+    <p>方块自身发出的光照强度，范围为 0–15。0 表示不发光。未来发光的方块（如荧石、火把）将使用此属性。</p>
+
+    <h4><code>sources.sound_break</code> — 破坏音效</h4>
+    <p>破坏（挖掘）该方块时播放的声音。默认 <code>"block_break"</code>。</p>
+
+    <h4><code>sources.sound_place</code> — 放置音效</h4>
+    <p>放置该方块时播放的声音。默认 <code>"block_place"</code>。</p>
+
+    <h4><code>sources.sound_step</code> — 行走音效</h4>
+    <p>玩家在该方块上行走时播放的声音。默认 <code>"block_step"</code>。</p>
+
+    <!-- ============================================================ -->
+    <!--  3.5.4 interaction 分组 — 交互属性                           -->
+    <!-- ============================================================ -->
+    <h3 style="margin-top:2rem; border-left:4px solid var(--accent); padding-left:0.6rem;">▸ <code>interaction</code> — 交互属性组</h3>
+    <p>包含 3 个子字段，控制工具类型、掉落物、方块实体。</p>
+
+    <h4><code>interaction.tool_type</code> — 工具类型</h4>
+    <p>推荐的挖掘工具，<code>"empty"</code> 表示空手即可。未来可能扩展为 <code>"pickaxe"</code>（镐）、<code>"shovel"</code>（锹）、<code>"axe"</code>（斧）等。</p>
+
+    <h4><code>interaction.drops</code> — 掉落物</h4>
+    <p>字符串数组，指定方块被破坏后掉落的物品 ID。默认掉落 <code>["CarrotS_block:0"]</code>。<br>
+    各方块覆写：<code>grass</code> → <code>["grass"]</code>，<code>stone</code> → <code>["stone"]</code>。</p>
+
+    <h4><code>interaction.tile_entity</code> — 方块实体</h4>
+    <p>如果此方块需要存储额外数据（如箱子中的物品、熔炉的进度），则在此指定绑定的 TileEntity 类名。当前所有方块均为 <code>null</code>。</p>
+
+    <!-- ============================================================ -->
+    <!--  3.6 与 Minecraft 的对比                                     -->
+    <!--  对比表格：CarrotS vs MC Java Edition 在各项属性上的差异     -->
+    <!--  更新：反映 blocks.json 的三层分组结构 vs MC 扁平 Block 类   -->
+    <!-- ============================================================ -->
+    <!-- <h2 id="comparison">与 Minecraft 的对比</h2>
 
     <table class="wiki-table">
       <thead>
         <tr>
-          <th>属性</th>
+          <th>方面</th>
           <th>CarrotS</th>
           <th>Minecraft (Java Edition)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>默认配置</td>
-          <td><code>ID_default</code> 条目统一设置</td>
-          <td>硬编码，部分属性在 <code>Block</code> 类中设默认值</td>
+          <td>配置结构</td>
+          <td>JSON 三层分组：<code>physics</code> / <code>sources</code> / <code>interaction</code></td>
+          <td>扁平 <code>Block</code> 类 + <code>BlockBehaviour.Properties</code></td>
+        </tr>
+        <tr>
+          <td>默认值系统</td>
+          <td><code>ID_default</code> 条目统一设置，子方块按需覆写</td>
+          <td>硬编码，部分属性在 <code>Block</code> 父类构造函数中设默认值</td>
         </tr>
         <tr>
           <td>方块 ID</td>
@@ -540,38 +694,46 @@
         </tr>
         <tr>
           <td>纹理</td>
-          <td>png 文件名，相对路径</td>
-          <td>通过模型 JSON 引用，支持多面不同纹理</td>
-        </tr>
-        <tr>
-          <td>掉落物</td>
-          <td>字符串数组，允许多个</td>
-          <td>Loot Table 系统（JSON）</td>
-        </tr>
-        <tr>
-          <td>方块实体</td>
-          <td><code>tile_entity</code> 字段</td>
-          <td><code>BlockEntity</code> 类 + 注册</td>
+          <td><code>sources.texture</code> — 单个 png 文件名</td>
+          <td>Block Model JSON + Multi-face 纹理</td>
         </tr>
         <tr>
           <td>声音</td>
-          <td>JSON 中直接配置 sound ID</td>
-          <td><code>SoundType</code> 枚举</td>
+          <td><code>sources.sound_*</code> — 三个扁平 key</td>
+          <td><code>SoundType</code> 枚举（每种方块一个 SoundType 实例）</td>
+        </tr>
+        <tr>
+          <td>掉落物</td>
+          <td><code>interaction.drops</code> — 字符串数组</td>
+          <td>Loot Table 系统（独立的 JSON，支持条件随机）</td>
+        </tr>
+        <tr>
+          <td>方块实体</td>
+          <td><code>interaction.tile_entity</code> — 字段名指定</td>
+          <td><code>BlockEntity</code> 类 + 注册表</td>
         </tr>
         <tr>
           <td>地图颜色</td>
-          <td>十六进制颜色字符串</td>
+          <td><code>sources.map_color</code> — 十六进制字符串</td>
           <td><code>MapColor</code> 枚举</td>
         </tr>
         <tr>
           <td>物态</td>
-          <td><code>state_of_matter</code> 字符串</td>
-          <td>通过 Material 类区分</td>
+          <td><code>physics.state_of_matter</code> — 字符串枚举</td>
+          <td><code>Material</code> 类 + <code>MaterialColor</code></td>
+        </tr>
+        <tr>
+          <td>物理属性分组</td>
+          <td>硬度/透明度/可燃性/重力/速度等都在 <code>physics</code> 下</td>
+          <td>散布在 <code>BlockBehaviour.Properties</code> 的各个 setter 方法中</td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
 
-    <!-- ===== 未来规划 ===== -->
+    <!-- ============================================================ -->
+    <!--  3.6 未来规划                                                -->
+    <!--  后续开发方向：更多方块、多面纹理、方块状态等                -->
+    <!-- ============================================================ -->
     <h2 id="future">未来规划</h2>
     <ul>
       <li>更多基础方块：泥土、木头、沙砾、沙子、水、熔岩等</li>
@@ -584,10 +746,13 @@
 
   </main>
 
-  <!-- ===== 右侧栏 ===== -->
+  <!-- ============================================================ -->
+  <!--  3.7 右侧侧边栏                                              -->
+  <!--  包含：方块总览信息框 + 固定目录导航                        -->
+  <!-- ============================================================ -->
   <aside class="wiki-sidebar">
 
-    <!-- 方块总览信息框 -->
+    <!-- ---- 方块总览信息框 ---- -->
     <div class="infobox">
       <div class="infobox-title">CarrotS 方块</div>
       <table>
@@ -595,34 +760,159 @@
         <tr><td>定义文件</td><td><code>blocks.json</code></td></tr>
         <tr><td>方块总数</td><td>3</td></tr>
         <tr><td>默认模板</td><td><code>ID_default</code></td></tr>
+        <tr><td>配置分组</td><td><code>physics</code> / <code>sources</code> / <code>interaction</code></td></tr>
         <tr><td>纹理目录</td><td><code>textures/</code></td></tr>
-        <tr><td>声音目录</td><td><code>sounds/</code> (规划中)</td></tr>
+        <tr><td>声音字段</td><td><code>sound_break / place / step</code></td></tr>
       </table>
     </div>
 
-    <!-- 目录 -->
+    <!-- ---- 目录（随滚动固定） ---- -->
     <div class="infobox" style="position:sticky; top:80px;">
-      <div class="infobox-title">目录</div>
-      <nav style="font-size:0.88rem; line-height:2;">
-        <a href="#block-list">📦 方块列表</a><br>
-        <a href="#air">　　🌬️ 空气</a><br>
-        <a href="#grass">　　🌿 草方块</a><br>
-        <a href="#stone">　　🪨 石头</a><br>
-        <a href="#default">⚙️ ID_default 默认模板</a><br>
-        <a href="#properties">📖 属性详解</a><br>
-        <a href="#comparison">⚖️ 与 Minecraft 对比</a><br>
-        <a href="#future">🔮 未来规划</a>
-      </nav>
+      <div class="infobox-title">目录
     </div>
 
-  </aside>
-</div>
+    <!-- 目录内容（快速跳转链接） -->
+    <div style="font-size:0.88rem; line-height:2;">
+      <a href="#block-list" style="display:block;">▸ 方块列表</a>
+      <a href="#air" style="display:block;">▸ 空气 (Air)</a>
+      <a href="#grass" style="display:block;">▸ 草方块 (Grass)</a>
+      <a href="#stone" style="display:block;">▸ 石头 (Stone)</a>
+      <a href="#default" style="display:block;">▸ ID_default</a>
+      <a href="#properties" style="display:block;">▸ 属性详解</a>
+      <!-- <a href="#comparison" style="display:block;">▸ 与 MC 对比</a> -->
+      <a href="#future" style="display:block;">▸ 未来规划</a>
+    </div>
+  </div>
 
-<!-- ===== 底部 ===== -->
+</aside>
+
+</div>
+<!-- ===== wiki-container 结束 ===== -->
+
+<!-- ================================================================ -->
+<!--  模块 4: 页脚                                                     -->
+<!-- ================================================================ -->
 <footer class="wiki-footer">
-  <p>长夜 (LongNight) — 开发中项目 · 本 Wiki 持续更新中</p>
-  <p>基于 CarrotS <code>blocks.json</code> 生成 · 样式仿照 Minecraft Wiki (Fandom)</p>
+  <p>长夜Wiki · 方块文档 · 基于 <code>blocks.json</code> 生成</p>
+  <p style="margin-top:0.3rem; font-size:0.75rem;">若无特殊说明，所有属性均继承自 <code>ID_default</code> 默认值</p>
 </footer>
+
+<!-- ================================================================ -->
+<!--  模块 5: 主题切换 JavaScript                                        -->
+<!--  功能: 在 dark-mode / light-mode 间切换，状态持久化到 localStorage  -->
+<!--  用法: 所有引用 theme.css 的页面引入此脚本即可共享主题偏好        -->
+<!-- ================================================================ -->
+<script>
+  (function() {
+    'use strict';
+
+    /* ================================================================
+       配置
+       ================================================================ */
+    var STORAGE_KEY = 'wiki-theme';
+    var DARK_CLASS  = 'dark-mode';
+    var LIGHT_CLASS = 'light-mode';
+    var DARK_ICON   = '\u{1F319}';   // 🌙 月亮（暗色模式）
+    var LIGHT_ICON  = '\u{2600}\u{FE0F}'; // ☀️ 太阳（白日模式）
+    var ANIM_DURATION = 600;  // ms, 扩散动画时长
+
+    var body   = document.body;
+    var toggle = document.getElementById('themeToggle');
+    var icon   = toggle ? toggle.querySelector('.toggle-icon') : null;
+
+    /* ================================================================
+       初始化：读取已保存的主题并应用
+       ================================================================ */
+    var saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved === 'light') {
+      body.classList.remove(DARK_CLASS);
+      body.classList.add(LIGHT_CLASS);
+      if (icon) icon.textContent = LIGHT_ICON;
+    } else {
+      body.classList.add(DARK_CLASS);
+      body.classList.remove(LIGHT_CLASS);
+      if (icon) icon.textContent = DARK_ICON;
+      if (!saved) localStorage.setItem(STORAGE_KEY, 'dark');
+    }
+
+    /* ================================================================
+       核心函数：应用主题（直接切换 class，不改图标/存储以外的逻辑）
+       ================================================================ */
+    function applyTheme(toDark) {
+      if (toDark) {
+        body.classList.remove(LIGHT_CLASS);
+        body.classList.add(DARK_CLASS);
+        if (icon) icon.textContent = DARK_ICON;
+        localStorage.setItem(STORAGE_KEY, 'dark');
+      } else {
+        body.classList.remove(DARK_CLASS);
+        body.classList.add(LIGHT_CLASS);
+        if (icon) icon.textContent = LIGHT_ICON;
+        localStorage.setItem(STORAGE_KEY, 'light');
+      }
+    }
+
+    /* ================================================================
+       主题切换入口（带扩散动画）
+       ================================================================ */
+    function switchTheme(toDark) {
+      // 获取按钮中心坐标（相对视口）
+      var rect = toggle.getBoundingClientRect();
+      var clickX = rect.left + rect.width / 2;
+      var clickY = rect.top + rect.height / 2;
+
+      // 计算从点击位置到最远角的距离（确保圆覆盖全屏）
+      var endRadius = Math.ceil(Math.hypot(
+        Math.max(clickX, window.innerWidth - clickX),
+        Math.max(clickY, window.innerHeight - clickY)
+      ));
+
+      /* ----- 方案 A: View Transition API（现代浏览器） -----
+         利用 startViewTransition 截取旧/新状态快照，
+         通过 Web Animations API 控制 ::view-transition-new(root)
+         的 clip-path 实现从按钮位置扩散的效果。
+         内容全程可见，不会出现覆盖层遮挡的问题。 */
+      if (document.startViewTransition) {
+        var transition = document.startViewTransition(function() {
+          applyTheme(toDark);
+        });
+
+        transition.ready.then(function() {
+          document.documentElement.animate(
+            {
+              clipPath: [
+                'circle(0 at ' + clickX + 'px ' + clickY + 'px)',
+                'circle(' + endRadius + 'px at ' + clickX + 'px ' + clickY + 'px)'
+              ]
+            },
+            {
+              duration: ANIM_DURATION,
+              easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
+              pseudoElement: '::view-transition-new(root)'
+            }
+          );
+        });
+
+        return;
+      }
+
+      /* ----- 方案 B: 降级方案（不支持 View Transition API 的浏览器） -----
+         直接切换，无动画 */
+      applyTheme(toDark);
+    }
+
+    /* ================================================================
+       绑定点击事件
+       ================================================================ */
+    if (toggle) {
+      toggle.addEventListener('click', function() {
+        var isDark = body.classList.contains(DARK_CLASS);
+        switchTheme(!isDark);
+      });
+    }
+  })();
+</script>
 
 </body>
 </html>

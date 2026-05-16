@@ -1,0 +1,167 @@
+/* ==========================================================================
+   文件名 : theme.css
+   描述   : 长夜Wiki 主题配色方案 — 包含暗色模式（默认）与白日模式
+   用法   : 所有 wiki/*.html 页面在 <head> 中通过 <link> 引用此文件，
+            然后在 <body> 上通过 JS 切换 class "dark-mode" / "light-mode"。
+            localStorage 键名 "wiki-theme"，存储 "dark" 或 "light"。
+   作者   : 长夜 (LongNight) 开发组
+   版本   : 1.0.0
+   ========================================================================== */
+
+/* ========================================================================
+   1. 暗色模式 — dark-mode（默认）
+   夜空底色：深邃的蓝黑色，点缀星光般的金色强调色
+   ======================================================================== */
+.dark-mode {
+  /* ---- 背景与边框（夜空调色板） ---- */
+  --bg-page: #070714;          /* 页面主背景 — 最深夜空蓝黑 */
+  --bg-card: #0f0f2a;          /* 卡片/区块背景 — 深靛蓝 */
+  --bg-table-alt: #14143a;     /* 表格交替行背景 */
+  --bg-table-header: #1a1a48;  /* 表格表头背景 */
+  --bg-hover: #222255;         /* 行/元素悬停背景 */
+  --bg-tag-grass: #1a3a1a;     /* 草标签底色 */
+  --bg-tag-stone: #2a2a3a;     /* 石头标签底色 */
+  --bg-tag-air: #0f2a4a;       /* 空气标签底色 */
+  --bg-notice: #0f0f2a;        /* 提示框背景色 */
+  --bg-block-icon: #0f0f2a;    /* 方块图标占位底色 */
+  --border: #2a2a5a;           /* 边框颜色 */
+
+  /* ---- 主题色（星芒金） ---- */
+  --accent: #f5c542;           /* 强调色——金色，如夜空中的星光 */
+  --accent-dim: #c4941a;       /* 强调色暗色变体 */
+
+  /* ---- 文字（月光白） ---- */
+  --text: #e0e0f0;             /* 主文字颜色（月光白） */
+  --text-dim: #8888aa;         /* 次要文字颜色（淡紫灰） */
+
+  /* ---- 链接（星云蓝） ---- */
+  --link: #6a9ef0;             /* 超链接颜色 */
+  --link-hover: #8ab4ff;       /* 链接悬停颜色 */
+
+  /* ---- 组件专用 ---- */
+  --header-bg: linear-gradient(135deg, #0a0a22, #12123a); /* 页头渐变（夜空深处） */
+  --infobox-bg: #0a0a20;       /* 信息框背景色 */
+  --property-name: #e0b040;    /* 属性名文字颜色（金色） */
+
+  /* ---- 阴影 ---- */
+  --shadow-header: 0 2px 12px rgba(0,0,0,0.7);
+  --shadow-toggle: 0 2px 8px rgba(0,0,0,0.6);
+
+  /* ---- 分类标签文字色 ---- */
+  --category-grass: #6ab84a;
+  --category-stone: #8888aa;
+  --category-air: #6aaef0;
+
+  /* ---- 过度用半透明 ---- */
+  --prop-item-bg: rgba(255,255,255,0.04);
+}
+
+/* ========================================================================
+   2. 白日模式 — light-mode
+   亮白底色，深色文字，适合日间阅读
+   ======================================================================== */
+.light-mode {
+  /* ---- 背景与边框 ---- */
+  --bg-page: #f5f5f0;          /* 页面主背景色（米白） */
+  --bg-card: #ffffff;          /* 卡片/区块背景色（纯白） */
+  --bg-table-alt: #f0f0ea;     /* 表格交替行背景色 */
+  --bg-table-header: #e0dcc8;  /* 表格表头背景色 */
+  --bg-hover: #e8e4d4;         /* 行/元素悬停背景色 */
+  --bg-tag-grass: #c8e6c9;     /* 草标签底色（浅绿） */
+  --bg-tag-stone: #e0e0e0;     /* 石头标签底色（浅灰） */
+  --bg-tag-air: #b3d9f0;       /* 空气标签底色（浅蓝） */
+  --bg-notice: #fff8e1;        /* 提示框背景色（淡黄） */
+  --bg-block-icon: #d0d0c8;    /* 方块图标占位底色 */
+  --border: #c0bfb8;           /* 边框颜色 */
+
+  /* ---- 主题色（金胡萝卜色，保持不变） ---- */
+  --accent: #b8860b;           /* 强调色——深金色，日间更清晰 */
+  --accent-dim: #8b6914;       /* 强调色暗色变体 */
+
+  /* ---- 文字 ---- */
+  --text: #2d2d30;             /* 主文字颜色（深灰黑） */
+  --text-dim: #6a6a72;         /* 次要文字颜色（中灰色） */
+
+  /* ---- 链接 ---- */
+  --link: #1565c0;             /* 超链接颜色（深蓝） */
+  --link-hover: #0d47a1;       /* 链接悬停颜色（更深蓝） */
+
+  /* ---- 组件专用 ---- */
+  --header-bg: linear-gradient(135deg, #e8dcc8, #d4c8b0); /* 页头渐变（暖米色） */
+  --infobox-bg: #fafaf5;       /* 信息框背景色 */
+  --property-name: #8b6914;    /* 属性名文字颜色（深金） */
+
+  /* ---- 阴影 ---- */
+  --shadow-header: 0 2px 12px rgba(0,0,0,0.12);
+  --shadow-toggle: 0 2px 8px rgba(0,0,0,0.15);
+
+  /* ---- 分类标签文字色 ---- */
+  --category-grass: #2e7d32;
+  --category-stone: #555555;
+  --category-air: #1565c0;
+
+  /* ---- 过度用半透明 ---- */
+  --prop-item-bg: rgba(0,0,0,0.02);
+}
+
+/* ========================================================================
+   3. 默认模式（未设置 class 时，默认为暗色·夜空）
+   ======================================================================== */
+:root {
+  --bg-page: #070714;
+  --bg-card: #0f0f2a;
+  --bg-table-alt: #14143a;
+  --bg-table-header: #1a1a48;
+  --bg-hover: #222255;
+  --bg-tag-grass: #1a3a1a;
+  --bg-tag-stone: #2a2a3a;
+  --bg-tag-air: #0f2a4a;
+  --bg-notice: #0f0f2a;
+  --bg-block-icon: #0f0f2a;
+  --border: #2a2a5a;
+  --accent: #f5c542;
+  --accent-dim: #c4941a;
+  --text: #e0e0f0;
+  --text-dim: #8888aa;
+  --link: #6a9ef0;
+  --link-hover: #8ab4ff;
+  --header-bg: linear-gradient(135deg, #0a0a22, #12123a);
+  --infobox-bg: #0a0a20;
+  --property-name: #e0b040;
+  --shadow-header: 0 2px 12px rgba(0,0,0,0.7);
+  --shadow-toggle: 0 2px 8px rgba(0,0,0,0.6);
+  --category-grass: #6ab84a;
+  --category-stone: #8888aa;
+  --category-air: #6aaef0;
+  --prop-item-bg: rgba(255,255,255,0.04);
+}
+
+/* 默认 body 也应用暗色变量（兼容未设置 class 的情况） */
+body {
+  --bg-page: #070714;
+  --bg-card: #0f0f2a;
+  --bg-table-alt: #14143a;
+  --bg-table-header: #1a1a48;
+  --bg-hover: #222255;
+  --bg-tag-grass: #1a3a1a;
+  --bg-tag-stone: #2a2a3a;
+  --bg-tag-air: #0f2a4a;
+  --bg-notice: #0f0f2a;
+  --bg-block-icon: #0f0f2a;
+  --border: #2a2a5a;
+  --accent: #f5c542;
+  --accent-dim: #c4941a;
+  --text: #e0e0f0;
+  --text-dim: #8888aa;
+  --link: #6a9ef0;
+  --link-hover: #8ab4ff;
+  --header-bg: linear-gradient(135deg, #0a0a22, #12123a);
+  --infobox-bg: #0a0a20;
+  --property-name: #e0b040;
+  --shadow-header: 0 2px 12px rgba(0,0,0,0.7);
+  --shadow-toggle: 0 2px 8px rgba(0,0,0,0.6);
+  --category-grass: #6ab84a;
+  --category-stone: #8888aa;
+  --category-air: #6aaef0;
+  --prop-item-bg: rgba(255,255,255,0.04);
+}
