@@ -1,0 +1,43 @@
+{
+"ID_default": {
+  "name": "CarrotS_NONE",
+    "physics": {
+      "hardness": 1.0,
+      "transparent": false,
+      "flammable": false,
+      "integrity": "A_full",
+      "state_of_matter": "solid",
+      "gravity": 1.0,
+      "speed_modifier": 1.0,
+      "jump_modifier": 1.0
+    },
+    "sources": {
+      "texture": "missing.png",
+      "map_color": "#888888",
+      "light_level": 0,
+      "sound_break": "block_break",
+      "sound_place": "block_place",
+      "sound_step": "block_step"
+    },
+    "interaction": {
+      "tool_type": "empty",
+      "drops": ["CarrotS_block:0"],
+      "tile_entity": null
+    }
+  },
+  "ID_000000": {
+    "name": "air",
+    "transparent": true,
+    "hardness": 0.0
+  },
+  "ID_000001": {
+    "name": "grass",
+    "texture": "grass.png",
+	  "drops": ["grass"]
+  },
+  "ID_000002": {
+    "name": "stone",
+    "texture": "stone.png",
+    "drops": ["stone"]
+  }
+}

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarrotS 方块 — 长夜Wiki</title>
+  <style>
+    /* ===== 基础重置 & 配色 ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-dark: #1b1b2f;
+      --bg-card: #232342;
+      --bg-table-alt: #2a2a4a;
+      --border: #3b3b6b;
+      --accent: #f5c542;       /* 金胡萝卜色 */
+      --accent-dim: #b8860b;
+      --text: #e8e8f0;
+      --text-dim: #a0a0b8;
+      --link: #5dade2;
+      --link-hover: #85c1e9;
+      --header-bg: linear-gradient(135deg, #2d1b3d, #1a1a3e);
+      --infobox-bg: #1e1e3a;
+      --property-name: #c9a84c;
+      --category-grass: #7ec850;
+      --category-stone: #8f8f8f;
+      --category-air: #88ccff;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: var(--link-hover); text-decoration: underline; }
+
+    /* ===== 头部 ===== */
+    .wiki-header {
+      background: var(--header-bg);
+      border-bottom: 3px solid var(--accent);
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0, 84, 149, 0.5);
+    }
+    .wiki-header .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+    .wiki-header .logo small {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--text-dim);
+      margin-left: 0.6rem;
+    }
+    .wiki-header .nav-links {
+      margin-left: auto;
+      display: flex;
+      gap: 1.5rem;
+    }
+    .wiki-header .nav-links a {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      transition: 0.2s;
+    }
+    .wiki-header .nav-links a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      text-decoration: none;
+    }
+
+    /* ===== 主容器 ===== */
+    .wiki-container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 2rem;
+    }
+
+    /* ===== 主要内容区 ===== */
+    .wiki-content { min-width: 0; }
+
+    .page-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      color: var(--accent);
+    }
+    .page-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ===== 信息框（侧边卡片） ===== */
+    .infobox {
+      background: var(--infobox-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    .infobox .infobox-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-align: center;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--accent);
+    }
+    .infobox table { width: 100%; border-collapse: collapse; }
+    .infobox td {
+      padding: 0.3rem 0.4rem;
+      vertical-align: top;
+    }
+    .infobox td:first-child {
+      color: var(--property-name);
+      font-weight: 600;
+      white-space: nowrap;
+      width: 38%;
+    }
+    .infobox .texture-preview {
+      display: block;
+      width: 48px;
+      height: 48px;
+      image-rendering: pixelated;
+      background: #413456;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin: 0 auto 0.5rem auto;
+    }
+
+    /* ===== 章节标题 ===== */
+    h2 {
+      font-size: 1.6rem;
+      margin: 2rem 0 1rem;
+      padding-left: 0.6rem;
+      border-left: 4px solid var(--accent);
+      color: var(--accent);
+    }
+    h3 {
+      font-size: 1.2rem;
+      margin: 1.5rem 0 0.8rem;
+      color: var(--accent-dim);
+    }
+
+    /* ===== 表格 ===== */
+    .wiki-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.92rem;
+    }
+    .wiki-table th {
+      background: #2d2d55;
+      color: var(--accent);
+      font-weight: 700;
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    .wiki-table td {
+      padding: 0.5rem 0.8rem;
+      border: 1px solid var(--border);
+    }
+    .wiki-table tr:nth-child(even) td {
+      background: var(--bg-table-alt);
+    }
+    .wiki-table tr:hover td {
+      background: #3f3f52;
+    }
+
+    /* 方块图标占位 */
+    .block-icon {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      image-rendering: pixelated;
+      background: #2a2a4a;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    /* ===== 标签/徽标 ===== */
+    .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+    .tag-grass { background: #2d5a2d; color: var(--category-grass); }
+    .tag-stone { background: #3a3a3a; color: var(--category-stone); }
+    .tag-air   { background: #1a3a5a; color: var(--category-air); }
+    .tag-default { background: #3a2a3a; color: var(--text-dim); }
+
+    /* ===== 属性列表 ===== */
+    .prop-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 1.5rem;
+      margin: 0.8rem 0;
+    }
+    .prop-list .prop-item {
+      padding: 0.4rem 0.6rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 4px;
+      border-left: 2px solid var(--border);
+    }
+    .prop-list .prop-key {
+      color: var(--property-name);
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    .prop-list .prop-val {
+      font-size: 0.95rem;
+    }
+
+    /* ===== 提示框 & 警告 ===== */
+    .notice {
+      background: #2a2a4a;
+      border-left: 4px solid var(--accent);
+      padding: 0.8rem 1.2rem;
+      margin: 1rem 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.92rem;
+    }
+    .notice strong { color: var(--accent); }
+
+    /* ===== 底部 ===== */
+    .wiki-footer {
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 800px) {
+      .wiki-container {
+        grid-template-columns: 1fr;
+      }
+      .prop-list {
+        grid-template-columns: 1fr;
+      }
+      .wiki-header {
+        flex-wrap: wrap;
+      }
+      .wiki-header .nav-links {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== 页面头部 ===== -->
+<header class="wiki-header">
+  <div class="logo">
+    🌙 长夜Wiki
+    <small>LongNight 开发文档</small>
+  </div>
+  <nav class="nav-links">
+    <a href="#">首页</a>
+    <a href="#" class="active">方块</a>
+    <a href="#">物品</a>
+    <a href="#">生物群系</a>
+    <a href="#">数据格式</a>
+  </nav>
+</header>
+
+<!-- ===== 主内容 ===== -->
+<div class="wiki-container">
+
+  <!-- 左侧：正文 -->
+  <main class="wiki-content">
+
+    <h1 class="page-title">CarrotS 方块</h1>
+    <p class="page-subtitle">
+      CarrotS 包中的方块定义 · 基于 <code>blocks.json</code> 数据驱动
+    </p>
+
+    <!-- 简介 -->
+    <p>
+      <strong>CarrotS</strong> 是<a href="#">长夜</a>项目中的一个示例资源包，提供了基础方块的定义。
+      每个方块通过 JSON 配置其属性，包括硬度、透明度、纹理、掉落物、声音等。
+      所有方块都继承自 <code>ID_default</code> 中的默认值，仅有差别的字段需要显式覆盖。
+    </p>
+
+    <div class="notice">
+      <strong>💡 数据驱动提示：</strong>
+      当某个属性（如 <code>hardness</code>）未在具体方块中定义时，游戏会回退使用
+      <code>ID_default</code> 中的默认值。这意味着每个方块只需定义与其默认值不同的字段即可。
+    </div>
+
+    <!-- ===== 方块列表 ===== -->
+    <h2 id="block-list">方块列表</h2>
+
+    <p>目前 CarrotS 中定义了以下方块：</p>
+
+    <table class="wiki-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>名称</th>
+          <th>纹理</th>
+          <th>硬度</th>
+          <th>透明</th>
+          <th>掉落物</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ID_000000</code></td>
+          <td><span class="tag tag-air">空气</span> Air</td>
+          <td>—</td>
+          <td>0.0</td>
+          <td>✅ 是</td>
+          <td>无</td>
+        </tr>
+        <tr>
+          <td><code>ID_000001</code></td>
+          <td><span class="tag tag-grass">草</span> Grass</td>
+          <td><span class="block-icon" style="background: #5a8c3e;"></span> grass.png</td>
+          <td>1.0 <small>(默认)</small></td>
+          <td>❌</td>
+          <td><code>grass</code></td>
+        </tr>
+        <tr>
+          <td><code>ID_000002</code></td>
+          <td><span class="tag tag-stone">石头</span> Stone</td>
+          <td><span class="block-icon" style="background: #6b6b6b;"></span> stone.png</td>
+          <td>1.0 <small>(默认)</small></td>
+          <td>❌</td>
+          <td><code>stone</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ===== 各方块详情 ===== -->
+
+    <!-- 空气 -->
+    <h3 id="air">空气 <span class="tag tag-air" style="vertical-align:middle;">Air</span></h3>
+    <p>
+      <strong>空气</strong>（Air）是构成世界中空白空间的方块。它完全透明，硬度为 0，
+      不需要任何工具即可被瞬间破坏（实际上不可被选中破坏）。
+    </p>
+    <div class="prop-list">
+      <div class="prop-item"><span class="prop-key">ID</span> <span class="prop-val"><code>ID_000000</code></span></div>
+      <div class="prop-item"><span class="prop-key">透明</span> <span class="prop-val">✅ 是</span></div>
+      <div class="prop-item"><span class="prop-key">硬度</span> <span class="prop-val">0.0</span></div>
+      <div class="prop-item"><span class="prop-key">掉落物</span> <span class="prop-val">无</span></div>
+      <div class="prop-item"><span class="prop-key">纹理</span> <span class="prop-val">无纹理</span></div>
+    </div>
+
+    <!-- 草方块 -->
+    <h3 id="grass">草方块 <span class="tag tag-grass" style="vertical-align:middle;">Grass</span></h3>
+    <p>
+      <strong>草方块</strong>（Grass）是覆盖在大多数陆地生物群系表面的方块。
+      使用适当的工具（如锹）采集可获得自身。在不使用工具徒手挖掘时，仍会掉落自身。
+    </p>
+    <div class="prop-list">
+      <div class="prop-item"><span class="prop-key">ID</span> <span class="prop-val"><code>ID_000001</code></span></div>
+      <div class="prop-item"><span class="prop-key">透明</span> <span class="prop-val">❌ 否 <small>(继承默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">硬度</span> <span class="prop-val">1.0 <small>(继承默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">纹理</span> <span class="prop-val"><code>grass.png</code></span></div>
+      <div class="prop-item"><span class="prop-key">掉落物</span> <span class="prop-val"><code>grass</code></span></div>
+      <div class="prop-item"><span class="prop-key">可燃</span> <span class="prop-val">❌ 否 <small>(继承默认)</small></span></div>
+    </div>
+
+    <!-- 石头 -->
+    <h3 id="stone">石头 <span class="tag tag-stone" style="vertical-align:middle;">Stone</span></h3>
+    <p>
+      <strong>石头</strong>（Stone）是地下最常见的固体方块。采集后会掉落自身。
+      在后续更新中，使用精准采集附魔或许可以获得石头本身，否则可能会掉落圆石（待定）。
+    </p>
+    <div class="prop-list">
+      <div class="prop-item"><span class="prop-key">ID</span> <span class="prop-val"><code>ID_000002</code></span></div>
+      <div class="prop-item"><span class="prop-key">透明</span> <span class="prop-val">❌ 否 <small>(继承默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">硬度</span> <span class="prop-val">1.0 <small>(继承默认)</small></span></div>
+      <div class="prop-item"><span class="prop-key">纹理</span> <span class="prop-val"><code>stone.png</code></span></div>
+      <div class="prop-item"><span class="prop-key">掉落物</span> <span class="prop-val"><code>stone</code></span></div>
+      <div class="prop-item"><span class="prop-key">推荐工具</span> <span class="prop-val">镐 (待定)</span></div>
+    </div>
+
+    <!-- ===== 默认模板详解 ===== -->
+    <h2 id="default">默认模板 <code>ID_default</code></h2>
+
+    <p>
+      <code>ID_default</code> 是一个特殊的条目，它不是可放置的方块，
+      而是为所有方块提供<strong>默认属性值</strong>。
+      当某个方块未定义特定字段时，游戏会回退使用此处的值。
+    </p>
+
+    <div class="notice">
+      <strong>📋 注意：</strong>
+      <code>ID_default</code> 本身的 <code>name</code> 为 <code>"CarrotS_NONE"</code>，
+      这表示它仅作为配置模板，在实际游戏中不会出现。
+    </div>
+
+    <table class="wiki-table">
+      <thead>
+        <tr>
+          <th>属性名</th>
+          <th>默认值</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><code>hardness</code></td><td>1.0</td><td>方块硬度，影响挖掘时间</td></tr>
+        <tr><td><code>transparent</code></td><td>false</td><td>是否为透明方块（如玻璃、空气）</td></tr>
+        <tr><td><code>flammable</code></td><td>false</td><td>是否可燃</td></tr>
+        <tr><td><code>integrity</code></td><td><code>"A_full"</code></td><td>完整性 / 碰撞箱形态</td></tr>
+        <tr><td><code>state_of_matter</code></td><td><code>"solid"</code></td><td>物态：solid / liquid / gas</td></tr>
+        <tr><td><code>texture</code></td><td><code>"missing.png"</code></td><td>默认纹理（缺失纹理占位）</td></tr>
+        <tr><td><code>drops</code></td><td><code>["CarrotS_block:0"]</code></td><td>掉落物列表</td></tr>
+        <tr><td><code>tile_entity</code></td><td>null</td><td>绑定的 TileEntity（如箱子、熔炉）</td></tr>
+        <tr><td><code>tool_type</code></td><td><code>"empty"</code></td><td>推荐工具类型</td></tr>
+        <tr><td><code>map_color</code></td><td><code>"#888888"</code></td><td>地图上显示的颜色</td></tr>
+        <tr><td><code>light_level</code></td><td>0</td><td>自身发光亮度 (0–15)</td></tr>
+        <tr><td><code>speed_modifier</code></td><td>1.0</td><td>行走速度倍率</td></tr>
+        <tr><td><code>gravity</code></td><td>1.0</td><td>重力倍率（影响掉落速度等）</td></tr>
+        <tr><td><code>jump_modifier</code></td><td>1.0</td><td>跳跃高度倍率</td></tr>
+        <tr><td><code>sound</code></td><td>见下方</td><td>声音配置</td></tr>
+      </tbody>
+    </table>
+
+    <h3>默认声音配置</h3>
+    <table class="wiki-table">
+      <thead>
+        <tr><th>事件</th><th>声音 ID</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>破坏 (break)</td><td><code>block_break</code></td></tr>
+        <tr><td>放置 (place)</td><td><code>block_place</code></td></tr>
+        <tr><td>行走 (step)</td><td><code>block_step</code></td></tr>
+      </tbody>
+    </table>
+
+    <!-- ===== 属性详解 ===== -->
+    <h2 id="properties">属性详解</h2>
+
+    <h3><code>name</code> — 名称</h3>
+    <p>方块的本地化键名或显示名称。例如 <code>"grass"</code>、<code>"stone"</code>。若后续接入 i18n 系统，此字段可能作为翻译键使用。</p>
+
+    <h3><code>hardness</code> — 硬度</h3>
+    <p>数值越高，挖掘时间越长。计算公式参考 Minecraft：<br>
+    <code>挖掘时间 = 硬度 × 1.5 / 工具速度</code>（待确认）。<br>
+    空气的硬度为 0，瞬间破坏。</p>
+
+    <h3><code>transparent</code> — 透明度</h3>
+    <p>若为 <code>true</code>，则光线可以穿过该方块，且方块侧面不会被渲染（类似玻璃、空气）。<br>
+    目前只有空气设置了 <code>true</code>。</p>
+
+    <h3><code>flammable</code> — 可燃性</h3>
+    <p>若为 <code>true</code>，该方块可被火焰点燃并蔓延。目前所有方块均不可燃（默认 <code>false</code>）。</p>
+
+    <h3><code>integrity</code> — 完整性</h3>
+    <p>控制方块的碰撞箱与外观形态。<code>"A_full"</code> 表示完整的 1×1×1 方块。未来可能支持台阶 (<code>"slab"</code>)、楼梯 (<code>"stair"</code>) 等。</p>
+
+    <h3><code>state_of_matter</code> — 物态</h3>
+    <p>物理状态：<code>solid</code>（固体）、<code>liquid</code>（液体）、<code>gas</code>（气体）。影响方块的流动与碰撞行为。</p>
+
+    <h3><code>texture</code> — 纹理</h3>
+    <p>方块使用的纹理文件路径（相对于 textures/ 目录）。默认值为 <code>"missing.png"</code>（缺失纹理占位图）。</p>
+
+    <h3><code>drops</code> — 掉落物</h3>
+    <p>字符串数组，指定方块被破坏后掉落的物品 ID。例如 <code>["grass"]</code> 表示掉落草物品。</p>
+
+    <h3><code>tile_entity</code> — 方块实体</h3>
+    <p>如果此方块需要存储额外数据（如箱子中的物品、熔炉的进度），则在此指定绑定的 TileEntity 类名。当前所有方块均为 <code>null</code>。</p>
+
+    <h3><code>tool_type</code> — 工具类型</h3>
+    <p>推荐的挖掘工具，<code>"empty"</code> 表示空手即可。未来可能扩展为 <code>"pickaxe"</code>、<code>"shovel"</code>、<code>"axe"</code> 等。</p>
+
+    <h3><code>map_color</code> — 地图颜色</h3>
+    <p>在游戏地图上该方块所呈现的颜色（十六进制 RGB）。例如默认 <code>"#888888"</code> 为灰色。</p>
+
+    <h3><code>light_level</code> — 光照等级</h3>
+    <p>方块自身发出的光照强度，范围为 0–15。0 表示不发光。未来发光的方块（如荧石、火把）将使用此属性。</p>
+
+    <h3><code>speed_modifier</code> — 速度修正</h3>
+    <p>玩家在该方块上行走的速度倍率。1.0 为正常速度。可用来制作减速方块（如蛛网 < 1.0）或加速方块（如冰 > 1.0）。</p>
+
+    <h3><code>gravity</code> — 重力</h3>
+    <p>该方块的重力倍率，影响掉落中的实体或受重力影响的方块（如沙砾）的下落速度。</p>
+
+    <h3><code>jump_modifier</code> — 跳跃修正</h3>
+    <p>玩家在该方块上跳跃的高度倍率。1.0 为正常跳跃高度。</p>
+
+    <h3><code>sound</code> — 声音</h3>
+    <p>包含三个子字段：<code>break</code>（破坏音效）、<code>place</code>（放置音效）、<code>step</code>（行走音效）。每个字段指定一个声音 ID。</p>
+
+    <!-- ===== 与 Minecraft 的对比 ===== -->
+    <h2 id="comparison">与 Minecraft 的对比</h2>
+
+    <table class="wiki-table">
+      <thead>
+        <tr>
+          <th>属性</th>
+          <th>CarrotS</th>
+          <th>Minecraft (Java Edition)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>默认配置</td>
+          <td><code>ID_default</code> 条目统一设置</td>
+          <td>硬编码，部分属性在 <code>Block</code> 类中设默认值</td>
+        </tr>
+        <tr>
+          <td>方块 ID</td>
+          <td>6 位数字编号 (<code>ID_000001</code>)</td>
+          <td>命名空间 ID (<code>minecraft:grass_block</code>)</td>
+        </tr>
+        <tr>
+          <td>纹理</td>
+          <td>png 文件名，相对路径</td>
+          <td>通过模型 JSON 引用，支持多面不同纹理</td>
+        </tr>
+        <tr>
+          <td>掉落物</td>
+          <td>字符串数组，允许多个</td>
+          <td>Loot Table 系统（JSON）</td>
+        </tr>
+        <tr>
+          <td>方块实体</td>
+          <td><code>tile_entity</code> 字段</td>
+          <td><code>BlockEntity</code> 类 + 注册</td>
+        </tr>
+        <tr>
+          <td>声音</td>
+          <td>JSON 中直接配置 sound ID</td>
+          <td><code>SoundType</code> 枚举</td>
+        </tr>
+        <tr>
+          <td>地图颜色</td>
+          <td>十六进制颜色字符串</td>
+          <td><code>MapColor</code> 枚举</td>
+        </tr>
+        <tr>
+          <td>物态</td>
+          <td><code>state_of_matter</code> 字符串</td>
+          <td>通过 Material 类区分</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ===== 未来规划 ===== -->
+    <h2 id="future">未来规划</h2>
+    <ul>
+      <li>更多基础方块：泥土、木头、沙砾、沙子、水、熔岩等</li>
+      <li>多面纹理支持（侧面/顶部/底部使用不同的纹理）</li>
+      <li>方块状态（如方向、含水、年龄等）</li>
+      <li>Loot Table 独立配置掉落物与条件</li>
+      <li>方块标签（Block Tags）系统</li>
+      <li>自定义声音资源（sounds/ 目录）</li>
+    </ul>
+
+  </main>
+
+  <!-- ===== 右侧栏 ===== -->
+  <aside class="wiki-sidebar">
+
+    <!-- 方块总览信息框 -->
+    <div class="infobox">
+      <div class="infobox-title">CarrotS 方块</div>
+      <table>
+        <tr><td>包名</td><td>CarrotS</td></tr>
+        <tr><td>定义文件</td><td><code>blocks.json</code></td></tr>
+        <tr><td>方块总数</td><td>3</td></tr>
+        <tr><td>默认模板</td><td><code>ID_default</code></td></tr>
+        <tr><td>纹理目录</td><td><code>textures/</code></td></tr>
+        <tr><td>声音目录</td><td><code>sounds/</code> (规划中)</td></tr>
+      </table>
+    </div>
+
+    <!-- 目录 -->
+    <div class="infobox" style="position:sticky; top:80px;">
+      <div class="infobox-title">目录</div>
+      <nav style="font-size:0.88rem; line-height:2;">
+        <a href="#block-list">📦 方块列表</a><br>
+        <a href="#air">　　🌬️ 空气</a><br>
+        <a href="#grass">　　🌿 草方块</a><br>
+        <a href="#stone">　　🪨 石头</a><br>
+        <a href="#default">⚙️ ID_default 默认模板</a><br>
+        <a href="#properties">📖 属性详解</a><br>
+        <a href="#comparison">⚖️ 与 Minecraft 对比</a><br>
+        <a href="#future">🔮 未来规划</a>
+      </nav>
+    </div>
+
+  </aside>
+</div>
+
+<!-- ===== 底部 ===== -->
+<footer class="wiki-footer">
+  <p>长夜 (LongNight) — 开发中项目 · 本 Wiki 持续更新中</p>
+  <p>基于 CarrotS <code>blocks.json</code> 生成 · 样式仿照 Minecraft Wiki (Fandom)</p>
+</footer>
+
+</body>
+</html>
