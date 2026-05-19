@@ -1,0 +1,28 @@
+{
+  "numeric_id": 4,
+  "physics": {
+    "hardness": 0.0,
+    "transparent": true,
+    "state_of_matter": "liquid",
+    "integrity": "Half_full",
+    "replaceable": true,
+    "gravity": 0.5,
+    "speed_modifier": 0.5,
+    "jump_modifier": 0.5,
+    "tickable": true
+  },
+  "sources": {
+    "texture": "water.png",
+    "map_color": "#3F76E4",
+    "light_level": 0,
+    "light_filter": 2,
+    "sound_break": "water_splash",
+    "sound_place": "water_splash",
+    "sound_step": "water_step"
+  },
+  "interaction": {
+    "tool_type": "empty",
+    "drops": [],
+    "tile_entity": null
+  }
+}

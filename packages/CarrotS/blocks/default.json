@@ -1,0 +1,29 @@
+{
+  "numeric_id": 0,
+  "physics": {
+    "hardness": 1.0,
+    "transparent": false,
+    "flammable": false,
+    "integrity": "A_full",
+    "replaceable": false,
+    "state_of_matter": "solid",
+    "gravity": 1.0,
+    "speed_modifier": 1.0,
+    "jump_modifier": 1.0,
+    "tickable": false
+  },
+  "sources": {
+    "texture": "missing.png",
+    "map_color": "#888888",
+    "light_level": 0,
+    "light_filter": 15,
+    "sound_break": "block_break",
+    "sound_place": "block_place",
+    "sound_step": "block_step"
+  },
+  "interaction": {
+    "tool_type": "empty",
+    "drops": [],
+    "tile_entity": null
+  }
+}

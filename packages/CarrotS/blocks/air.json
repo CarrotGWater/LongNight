@@ -1,0 +1,19 @@
+{
+  "numeric_id": 1,
+  "physics": {
+    "hardness": 0.0,
+    "transparent": true,
+    "integrity": "Empty",
+    "replaceable": true,
+    "state_of_matter": "gas"
+  },
+  "sources": {
+    "texture": "air.png",
+    "map_color": "#64b5f6"
+  },
+  "interaction": {
+    "tool_type": "empty",
+    "drops": [],
+    "tile_entity": null
+  }
+}

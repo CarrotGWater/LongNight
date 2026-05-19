@@ -1,0 +1,28 @@
+{
+  "numeric_id": 2,
+  "physics": {
+    "hardness": 0.6,
+    "transparent": false,
+    "flammable": true,
+    "integrity": "A_full",
+    "replaceable": false,
+    "state_of_matter": "solid",
+    "gravity": 1.0,
+    "speed_modifier": 1.0,
+    "jump_modifier": 1.0,
+    "tickable": false
+  },
+  "sources": {
+    "texture": "grass.png",
+    "map_color": "#33930E",
+    "light_level": 0,
+    "light_filter": 15,
+    "sound_break": "grass_break",
+    "sound_place": "grass_place",
+    "sound_step": "grass_step"
+  },
+  "interaction": {
+    "tool_type": "shovel",
+    "drops": ["CarrotS:grass_block"]
+  }
+}

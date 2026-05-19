@@ -1,0 +1,9 @@
+{
+  "CarrotS:default": {
+    "numeric_id": 0,
+    "stack_size": 64,
+    "max_damage": 0,
+    "category": "misc",
+    "texture": "missing.png"
+  }
+}

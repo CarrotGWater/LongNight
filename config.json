@@ -1,0 +1,11 @@
+﻿{
+  "format_version": 1,
+  "language": "zh_CN",
+  "pack_load_order": ["CarrotS"],
+  "default_world": "MyWorld",
+  "debug_mode": false,
+  "render_distance": 12,
+  "max_fps": 120,
+  "enable_sound": true,
+  "enable_music": true
+}

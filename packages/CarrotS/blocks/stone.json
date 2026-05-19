@@ -1,0 +1,28 @@
+{
+  "numeric_id": 3,
+  "physics": {
+    "hardness": 1.5,
+    "transparent": false,
+    "flammable": false,
+    "integrity": "A_full",
+    "replaceable": false,
+    "state_of_matter": "solid",
+    "gravity": 1.0,
+    "speed_modifier": 1.0,
+    "jump_modifier": 1.0,
+    "tickable": false
+  },
+  "sources": {
+    "texture": "stone.png",
+    "map_color": "#969696",
+    "light_level": 0,
+    "light_filter": 15,
+    "sound_break": "stone_break",
+    "sound_place": "stone_place",
+    "sound_step": "stone_step"
+  },
+  "interaction": {
+    "tool_type": "pickaxe",
+    "drops": ["CarrotS:stone_block"]
+  }
+}

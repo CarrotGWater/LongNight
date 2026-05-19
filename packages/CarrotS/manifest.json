@@ -1,0 +1,21 @@
+{
+  "format_version": 1,
+  "id": "CarrotS",
+  "name": "CarrotS Core Pack",
+  "description": "长夜 (LongNight) 核心内容包 — 提供基础方块、物品与游戏机制",
+  "version": "1.0.0",
+  "author": "LongNight Dev Team",
+  "icon": "textures/icon.png",
+  "paths": {
+    "blocks": "blocks/",
+    "items": "items/",
+    "entities": "entities/",
+    "structures": "structures/",
+    "generation_rules": "generation_rules/",
+    "behaviors": "behaviors/",
+    "textures": "textures/",
+    "sounds": "sounds/",
+    "lang": "lang/"
+  },
+  "load_order": 0
+}
