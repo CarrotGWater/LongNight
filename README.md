@@ -27,16 +27,6 @@ longnight/
 │       ├── textures/                     # 方块/物品/实体纹理
 │       ├── sounds/                       # 音效文件
 │       └── lang/                         # 多语言翻译文件
-├── wiki/                                 # Wiki 文档站点（独立于游戏数据）
-│   ├── generate_blocks_data.py           #   方块数据解析脚本
-│   ├── blocks-meta.json                  #   Wiki 展示元数据
-│   ├── blocks-data.js                    #   自动生成的前端数据
-│   ├── home.html                         #   首页
-│   ├── blocks_wiki.html                  #   方块文档页
-│   ├── palette.html                      #   主题调色盘
-│   ├── nav.js                            #   共享导航 + 路由
-│   ├── css/theme.css                     #   双主题配色
-│   └── 404.html                          #   404 重定向页
 ├── saves/                                # 世界存档目录
 │   └── MyWorld/                          # 默认世界
 ├── config.json                           # 全局游戏设置（语言、包加载顺序等）
